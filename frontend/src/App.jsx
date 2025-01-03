@@ -1,35 +1,72 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import './App.css';
+import Board from './components/Board';
+import NewBoardForm from './components/NewBoardForm';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [boards, setBoards] = useState([]); 
+  const [selectedBoardId, setSelectedBoardId] = useState(null); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
+  
+  const mockBoards = [
+    {
+      id: 1,
+      title: "Project Alpha",
+      owner: "Alice",
+      cards: [
+        { id: 1, text: "Set up project structure", completed: false },
+        { id: 2, text: "Create initial components", completed: true },
+      ],
+    },
+    {
+      id: 2,
+      title: "Project Beta",
+      owner: "Bob",
+      cards: [
+        { id: 3, text: "Design database schema", completed: false },
+        { id: 4, text: "Implement API endpoints", completed: true },
+      ],
+    },
+  ];
+
+  useEffect(() => {
+    setTimeout(() => {
+      setBoards(mockBoards);
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  const addBoard = (newBoard) => {
+    setBoards([...boards, { ...newBoard, id: boards.length + 1, cards: [] }]);
+  };
+
+  const selectedBoard = boards.find(board => board.id === selectedBoardId);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
-    <>
+    <div className="App">
+      <h1>Welcome to the Inspiration Board</h1>
+      <NewBoardForm addBoard={addBoard} />
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h2>Boards</h2>
+        <ul>
+          {boards.map(board => (
+            <li key={board.id} onClick={() => setSelectedBoardId(board.id)}>
+              {board.title}
+            </li>
+          ))}
+        </ul>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      {selectedBoard ? (
+        <Board board={selectedBoard} />
+      ) : (
+        <p>No board selected.</p>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
