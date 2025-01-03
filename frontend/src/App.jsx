@@ -8,6 +8,7 @@ function App() {
   const [selectedBoardId, setSelectedBoardId] = useState(null); 
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null); 
+  const [showNewBoardForm, setShowNewBoardForm] = useState(false);
   
   const mockBoards = [
     {
@@ -49,13 +50,16 @@ function App() {
   return (
     <div className="App">
       <h1>Welcome to the Inspiration Board</h1>
-      <NewBoardForm addBoard={addBoard} />
+      <button onClick={() => setShowNewBoardForm(!showNewBoardForm)}>
+        {showNewBoardForm ? "Hide New Board Form" : "Show New Board Form"}
+      </button>
+      {showNewBoardForm && <NewBoardForm addBoard={addBoard} />}
       <div>
         <h2>Boards</h2>
         <ul>
           {boards.map(board => (
             <li key={board.id} onClick={() => setSelectedBoardId(board.id)}>
-              {board.title}
+              {board.title} - {board.owner}
             </li>
           ))}
         </ul>

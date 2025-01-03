@@ -3,18 +3,23 @@ import React, { useState } from "react";
 const NewBoardForm = ({ addBoard }) => {
   const [title, setTitle] = useState("");
   const [owner, setOwner] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (title && owner) {
-      addBoard({ title, owner });
-      setTitle("");
-      setOwner("");
+    if (!title || !owner) {
+      setError("Both title and owner are required.");
+      return;
     }
+    addBoard({ title, owner });
+    setTitle("");
+    setOwner("");
+    setError("");
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <div>
         <label htmlFor="title">Title:</label>
         <input
@@ -25,7 +30,7 @@ const NewBoardForm = ({ addBoard }) => {
         />
       </div>
       <div>
-        <label htmlFor="owner">Owner:</label>
+        <label htmlFor="owner">Owner's Name :</label>
         <input
           type="text"
           id="owner"
