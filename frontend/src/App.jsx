@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-// import CardList from './components/CardList'
+import NewBoardForm from "./components/NewBoardForm";
+import Board from "./components/Board";
 import axios from 'axios'
 
 const getAllBoardsApi = () => {
@@ -39,18 +40,55 @@ const deleteCardApi = (id) => {
 
 //APP COMPONENT
 function App() {
-  // const [cardData, setCardData] = useState([]);
-  const [boardData, setBoardData] = useState([]);
+  const [boards, setBoards] = useState([]);
+  const [selectedBoardId, setSelectedBoardId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showNewBoardForm, setShowNewBoardForm] = useState(false);
   
   const getAllBoards = () => {
     getAllBoardsApi().then((boards) => {
-      setBoardData(boards);
+      setBoards(boards);
       console.log(boards)
     });
   };
   useEffect(() => {
     getAllBoards();
   }, []);  
+const addBoard = (newBoard) => {
+    setBoards([...boards, { ...newBoard, id: boards.length + 1, cards: [] }]);
+  };
+
+  const selectedBoard = boards.find(board => board.id === selectedBoardId);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  return (
+    <div className="App">
+      <h1>Welcome to the Inspiration Board</h1>
+      <button onClick={() => setShowNewBoardForm(!showNewBoardForm)}>
+        {showNewBoardForm ? "Hide New Board Form" : "Show New Board Form"}
+      </button>
+      {showNewBoardForm && <NewBoardForm addBoard={addBoard} />}
+      <div>
+        <h2>Boards</h2>
+        <ul>
+          {boards.map(board => (
+            <li key={board.id} onClick={() => setSelectedBoardId(board.id)}>
+              {board.title} - {board.owner}
+            </li>
+          ))}
+        </ul>
+      </div>
+      {selectedBoard ? (
+        <Board board={selectedBoard} />
+      ) : (
+        <p>No board selected.</p>
+      )}
+    </div>
+  );
+}
 
   // const handleDeleteCard = (id) => {
   //   deleteCardApi(id).then(() => {
@@ -62,17 +100,17 @@ function App() {
   //   });
   // };
 
-  return (
-    <>
-      <div>
-        <h1>Test</h1>
-        {/* <CardList cards={cardData} onDelete={handleDeleteCard}></CardList> */}
-      </div>
-    </>
-  );
-}
+//   return (
+//     <>
+//       <div>
+//         <h1>Test</h1>
+//         {/* <CardList cards={cardData} onDelete={handleDeleteCard}></CardList> */}
+//       </div>
+//     </>
+//   );
+// }
 
-const testBoardData = {
+const testBoards = {
   board: [
     {
       board_id: 1,

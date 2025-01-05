@@ -2,7 +2,8 @@ import PropTypes from "prop-types";
 // import { useState } from "react";
 import "./Card.css";
 
-const Card = ({ id, message, likesCount, onDelete }) => {
+const Card = ({ id, onDelete }) => {
+  const [likes, setLikes] = useState(0);
 
   // need to add Id
   const onClickDelete = () => {
