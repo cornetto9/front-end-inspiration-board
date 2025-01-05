@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const NewCardForm = ({ addCard }) => {
   const [text, setText] = useState("");
@@ -31,6 +32,10 @@ const NewCardForm = ({ addCard }) => {
       <button type="submit">Add</button>
     </form>
   );
+};
+
+NewCardForm.propTypes = {
+  addCard: PropTypes.func.isRequired,
 };
 
 export default NewCardForm;

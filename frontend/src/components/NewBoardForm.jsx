@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import PropTypes from "prop-types";
 
 const NewBoardForm = ({ addBoard }) => {
   const [title, setTitle] = useState("");
@@ -30,7 +31,7 @@ const NewBoardForm = ({ addBoard }) => {
         />
       </div>
       <div>
-        <label htmlFor="owner">Owner's Name :</label>
+        <label htmlFor="owner">Owner&apos;s Name :</label>
         <input
           type="text"
           id="owner"
@@ -41,6 +42,10 @@ const NewBoardForm = ({ addBoard }) => {
       <button type="submit">Add Board</button>
     </form>
   );
+};
+
+NewBoardForm.propTypes = {
+  addBoard: PropTypes.func.isRequired,
 };
 
 export default NewBoardForm;

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CardList from "./CardList";
 import NewCardForm from "./NewCardForm";
+import PropTypes from "prop-types";
 
 const Board = ({ board }) => {
   const [cards, setCards] = useState(board.cards);
@@ -38,6 +39,10 @@ const Board = ({ board }) => {
       <NewCardForm addCard={addCard} />
     </div>
   );
+};
+
+Board.propTypes = {
+  board: PropTypes.object.isRequired,
 };
 
 export default Board;
