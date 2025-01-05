@@ -1,31 +1,149 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
-import Card from './components/Card'
+// import CardList from './components/CardList'
+import axios from 'axios'
 
-const CARDS = [
-  {
-    id: 1,
-    message: 'Mow the lawn',
-    likes: false,
-    is_deleted: false,
-    board_id: 1,
-  },
-  {
-    id: 2,
-    message: 'Cook Pasta',
-    likes: true,
-    is_deleted: false,
-    board_id: 1,
-  },
-];
+const getAllBoardsApi = () => {
+  return axios
+    .get(`http://127.0.0.1:5000/boards`)
+    .then((response) => {
+      console.log("API Response:", response.data.board); 
+      const apiBoards = response.data.board;
+      const newBoards = apiBoards.map(convertBoardFromApi);
+      return newBoards;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
 
+function convertCardFromApi(card) {
+  return {
+    cardId: card.card_id,
+    message: card.message,
+    likesCount: card.likes_count,
+  };
+}
+
+function convertBoardFromApi(board) {
+  return {
+    BoardId: board.board_id,
+  };
+}
+
+const deleteCardApi = (id) => {
+  return axios.delete(`http://127.0.0.1:5000/boards/${id}/cards`).catch((error) => {
+    console.log(error);
+  });
+};
+
+//APP COMPONENT
 function App() {
+  // const [cardData, setCardData] = useState([]);
+  const [boardData, setBoardData] = useState([]);
+  
+  const getAllBoards = () => {
+    getAllBoardsApi().then((boards) => {
+      setBoardData(boards);
+      console.log(boards)
+    });
+  };
+  useEffect(() => {
+    getAllBoards();
+  }, []);  
+
+  // const handleDeleteCard = (id) => {
+  //   deleteCardApi(id).then(() => {
+  //     setCardData((cardData) =>
+  //       cardData.filter((card) => {
+  //         return card.id !== id;
+  //       })
+  //     );
+  //   });
+  // };
 
   return (
     <>
-      <Card cardData={CARDS}></Card>
+      <div>
+        <h1>Test</h1>
+        {/* <CardList cards={cardData} onDelete={handleDeleteCard}></CardList> */}
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+const testBoardData = {
+  board: [
+    {
+      board_id: 1,
+      cards: [],
+      owner: "Me",
+      title: "My First Board",
+    },
+    {
+      board_id: 2,
+      cards: [
+        {
+          board_id: 2,
+          card_id: 1,
+          likes_count: 5,
+          message: "Never give up!",
+        },
+        {
+          board_id: 2,
+          card_id: 2,
+          likes_count: 10,
+          message: "You are capable of amazing things",
+        },
+      ],
+      owner: "Ada Lovelace",
+      title: "Motivation Quotes",
+    },
+    {
+      board_id: 3,
+      cards: [
+        {
+          board_id: 3,
+          card_id: 3,
+          likes_count: 3,
+          message: "I am becoming a better programmer every day",
+        },
+        {
+          board_id: 3,
+          card_id: 6,
+          likes_count: 8,
+          message: "Start small, think big",
+        },
+      ],
+      owner: "Grace Hopper",
+      title: "Daily Affirmations",
+    },
+    {
+      board_id: 4,
+      cards: [
+        {
+          board_id: 4,
+          card_id: 4,
+          likes_count: 7,
+          message: "Debug with patience",
+        },
+        {
+          board_id: 4,
+          card_id: 5,
+          likes_count: 15,
+          message: "Remember to take breaks",
+        },
+      ],
+      owner: "Katherine Johnson",
+      title: "Coding Tips",
+    },
+    {
+      board_id: 5,
+      cards: [],
+      owner: "Sonic",
+      title: "Tests always work!",
+    },
+  ],
+};
+
+export default App;
