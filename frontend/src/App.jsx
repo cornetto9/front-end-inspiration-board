@@ -52,11 +52,6 @@ const getCardListApi = (id) => {
       console.log(error);
     });
 }
-// const deleteCardApi = (id) => {
-//   return axios.delete(`http://127.0.0.1:5000/boards/${id}/cards`).catch((error) => {
-//     console.log(error);
-//   });
-// };
 
 //APP COMPONENT
 function App() {
@@ -66,62 +61,34 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showNewBoardForm, setShowNewBoardForm] = useState(false);
-  
+
   const getAllBoards = () => {
     getAllBoardsApi().then((boards) => {
       setBoards(boards);
-      console.log(boards)
+      console.log(boards);
     });
   };
   useEffect(() => {
     getAllBoards();
     setLoading(false);
-  }, []);  
+  }, []);
 
   const getCardList = (id) => {
     getCardListApi(id)
-    .then((cards) => {
-      setCardData(cards);
-      console.log('cardList',cards)
-    })
-    .catch((error) => {
-      console.log("getCardList", error);
-    }); 
-  }; 
-  
+      .then((cards) => {
+        setCardData(cards);
+        console.log("cardList", cards);
+      })
+      .catch((error) => {
+        console.log("getCardList", error);
+      });
+  };
+
   //sets card list by board id
   const handleBoardClick = (id) => {
     setSelectedBoardId(id);
     getCardList(id);
   };
-
-  // const mockBoards = [
-  //   {
-  //     id: 1,
-  //     title: "Project Alpha",
-  //     owner: "Alice",
-  //     cards: [
-  //       { id: 1, text: "Set up project structure", completed: false },
-  //       { id: 2, text: "Create initial components", completed: true },
-  //     ],
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Project Beta",
-  //     owner: "Bob",
-  //     cards: [
-  //       { id: 3, text: "Design database schema", completed: false },
-  //       { id: 4, text: "Implement API endpoints", completed: true },
-  //     ],
-  //   },
-  // ];
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setBoards(mockBoards);
-  //     setLoading(false);
-  //   }, 1000);
-  // }, []);
 
   const addBoard = (newBoard) => {
     setBoards([...boards, { ...newBoard, id: boards.length + 1, cards: [] }]);
@@ -132,15 +99,35 @@ function App() {
     axios
       .post(`${kbaseURL}/boards/${selectedBoardId}/cards`, data)
       .then((response) => {
-        setCardData((prevCardData) => [convertCardFromApi(response.data.card), ...prevCardData]);
+        setCardData((prevCardData) => [
+          convertCardFromApi(response.data.card),
+          ...prevCardData,
+        ]);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
+  const deleteCardApi = (id) => {
+    return axios
+      .delete(`http://127.0.0.1:5000/cards/${id}`)
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-  const selectedBoard = boards.find(board => board.id === selectedBoardId);
+  const handleDeleteCard = (id) => {
+    deleteCardApi(id).then(() => {
+      setCardData((cardData) =>
+        cardData.filter((card) => {
+          return card.id !== id;
+        })
+      );
+    });
+  };
+
+  const selectedBoard = boards.find((board) => board.id === selectedBoardId);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -169,32 +156,12 @@ function App() {
       )}
       <div>
         {/* <h2>Card List {selectedBoard.title}</h2> */}
-        <CardList cards={cardData} />
         <NewCardForm onCardSubmit={handleCardSubmit} />
+        <CardList cards={cardData} onDelete={handleDeleteCard}/>
       </div>
     </div>
   );
-
 }
 
-  // const handleDeleteCard = (id) => {
-  //   deleteCardApi(id).then(() => {
-  //     setCardData((cardData) =>
-  //       cardData.filter((card) => {
-  //         return card.id !== id;
-  //       })
-  //     );
-  //   });
-  // };
-
-//   return (
-//     <>
-//       <div>
-//         <h1>Test</h1>
-//         {/* <CardList cards={cardData} onDelete={handleDeleteCard}></CardList> */}
-//       </div>
-//     </>
-//   );
-// }
 
 export default App;

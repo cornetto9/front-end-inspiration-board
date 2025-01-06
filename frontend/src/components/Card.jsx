@@ -3,7 +3,7 @@ import { useState } from "react";
 import "./Card.css";
 
 const Card = ({ card, onDelete }) => {
-  const [likes, setLikes] = useState(0);
+  const [likes, setLikes] = useState(1);
 
   // need to add Id
   const onClickDelete = () => {
