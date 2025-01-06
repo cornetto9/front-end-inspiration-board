@@ -5,38 +5,100 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+body {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  color: #000;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.header {
+  background-color: yellow;
+  padding: 15px;
+  text-align: center;
+}
+
+.title {
+  font-size: 36px;
+  color: black;
+  margin: 0;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 1rem;
+}
+
+.section-header {
+  font-size: 24px;
+  margin-bottom: 1rem;
+}
+
+.board-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.board-list li {
+  cursor: pointer;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  margin-bottom: 0.5rem;
+}
+
+.board-list li:hover {
+  background-color: #f0f0f0;
+}
+
+.selected-board,
+.create-board {
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
 }
 
 .card {
-  padding: 2em;
+  background: #fff;
+  border: 2px solid black;
+  padding: 10px;
+  width: 150px;
+  height: 100px;
+  box-shadow: 3px 3px 0 black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 14px;
+  position: relative;  /* 使得背景框与卡片内容保持一致 */
 }
 
-.read-the-docs {
-  color: #888;
+.card::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background-color: rgba(0, 0, 0, 0.1);  /* 半透明背景框 */
+  border-radius: 10px;  /* 可选，给框添加圆角效果 */
+  z-index: -1;  /* 确保框在卡片背后 */
+}
+
+.card:hover {
+  background: #ffda44;
+  transform: translateY(-3px);
+  transition: all 0.2s ease;
 }

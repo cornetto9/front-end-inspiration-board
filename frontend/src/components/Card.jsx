@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 
 const Card = ({ card, deleteCard }) => {
-  const [likes, setLikes] = useState(0);
+  const [likes, setLikes] = useState(card.likes || 0);
+
+  const handleLike = () => {
+    setLikes(likes + 1);
+    card.likes = likes + 1; 
+  };
 
   return (
     <div>
