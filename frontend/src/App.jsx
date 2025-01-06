@@ -3,20 +3,22 @@ import './App.css'
 import NewBoardForm from "./components/NewBoardForm";
 import Board from "./components/Board";
 import axios from 'axios'
-import { Card } from '@material-ui/core';
 import CardList from './components/CardList';
+import NewCardForm from './components/NewCardForm';
+
+const kbaseURL = "http://localhost:5000";
 
 const getAllBoardsApi = () => {
   return axios
-    .get(`http://127.0.0.1:5000/boards`)
+    .get(`${kbaseURL}/boards`)
     .then((response) => {
-      // console.log("API Response:", response.data.board); 
+      // console.log("API Response:", response.data.board);
       const apiBoards = response.data.board;
       const newBoards = apiBoards.map(convertBoardFromApi);
       return newBoards;
     })
     .catch((error) => {
-      console.log('error', error);
+      console.log("error", error);
     });
 };
 
@@ -38,7 +40,8 @@ const convertBoardFromApi = (board) => {
 }
 
 const getCardListApi = (id) => {
-  return axios.get(`http://127.0.0.1:5000/boards/${id}/cards`)
+  return axios
+    .get(`${kbaseURL}/boards/${id}/cards`)
     .then((response) => {
       // return response.data.cards;
       const apiCards = response.data.cards;
@@ -85,12 +88,12 @@ function App() {
       console.log("getCardList", error);
     }); 
   }; 
-    
+  
+  //sets card list by board id
   const handleBoardClick = (id) => {
     setSelectedBoardId(id);
     getCardList(id);
   };
-
 
   // const mockBoards = [
   //   {
@@ -124,6 +127,18 @@ function App() {
     setBoards([...boards, { ...newBoard, id: boards.length + 1, cards: [] }]);
   };
 
+  const handleCardSubmit = (data) => {
+    axios
+      .post(`${kbaseURL}/boards/${selectedBoardId}/cards`, data)
+      .then((response) => {
+        setCardData((prevCardData) => [convertCardFromApi(response.data), ...prevCardData]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+
   const selectedBoard = boards.find(board => board.id === selectedBoardId);
 
   if (loading) return <p>Loading...</p>;
@@ -154,6 +169,7 @@ function App() {
       <div>
         {/* <h2>Card List {selectedBoard.title}</h2> */}
         <CardList cards={cardData} />
+        <NewCardForm onCardSubmit={handleCardSubmit} />
       </div>
     </div>
   );
