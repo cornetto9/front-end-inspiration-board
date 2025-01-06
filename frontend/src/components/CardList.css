@@ -2,9 +2,11 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: space-around;
+    /* justify-content: space-around; */
+    justify-content: flex-start;
     width: 85%;
     padding: 4em;
+    padding-left: 15em;
     gap: 2em;
     border-radius: 0.625em;
     margin-bottom: 2em;
