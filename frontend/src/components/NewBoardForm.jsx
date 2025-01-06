@@ -1,7 +1,8 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import "./NewBoardForm.css";
 
-const NewBoardForm = ({ addBoard }) => {
+const NewBoardForm = ({ addBoard, setShowNewForm, showNewForm }) => {
   const [title, setTitle] = useState("");
   const [owner, setOwner] = useState("");
   const [error, setError] = useState("");
@@ -40,12 +41,17 @@ const NewBoardForm = ({ addBoard }) => {
         />
       </div>
       <button type="submit">Add Board</button>
+      <button onClick={() => setShowNewForm(!showNewForm)}>
+        Hide Board
+      </button>
     </form>
   );
 };
 
 NewBoardForm.propTypes = {
   addBoard: PropTypes.func.isRequired,
+  setShowNewForm: PropTypes.func.isRequired,
+  showNewForm: PropTypes.bool.isRequired,
 };
 
 export default NewBoardForm;

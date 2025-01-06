@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import "./Card.css";
 
 const Card = ({ card, onDelete, onLike }) => {
@@ -9,8 +11,12 @@ const Card = ({ card, onDelete, onLike }) => {
         <p>{card.message}</p>
       </div>
       <div className="card-controls">
-        <span>{card.likesCount} 💕</span>
-        <button onClick={() => onLike(card.id)}>+1</button>
+        <span>
+          <button onClick={() => onLike(card.id)}>
+            {`${card.likesCount} `}
+            <FontAwesomeIcon icon={faThumbsUp} />
+          </button>
+        </span>
         <button onClick={() => onDelete(card.id)}>Delete</button>
       </div>
     </div>

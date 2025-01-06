@@ -2,6 +2,7 @@ import { useState } from "react";
 // import CardList from "./CardList";
 // import NewCardForm from "./NewCardForm";
 import PropTypes from "prop-types";
+import "./Board.css";
 
 const Board = ({ board }) => {
   // const [cards, setCards] = useState(board.cards);
@@ -25,8 +26,8 @@ const Board = ({ board }) => {
   // });
 
   return (
-    <div className="board">
-      <h2 className="board-title">{board.title}</h2>
+    <div>
+      {/* <h2 className="board-title">{board.title}</h2>
       <div>
         <button onClick={() => setSortType("alphabetical")}>
           Sort alphabetically
@@ -35,8 +36,8 @@ const Board = ({ board }) => {
           Sort by number of +1s
         </button>
       </div>
-      {/* <CardList cards={cards} onDelete={deleteCard} /> */}
-      {/* <NewCardForm addCard={addCard} /> */}
+      <CardList cards={cards} onDelete={deleteCard} />
+      <NewCardForm addCard={addCard} /> */}
     </div>
   );
 };

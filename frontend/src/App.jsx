@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import NewBoardForm from "./components/NewBoardForm";
-import Board from "./components/Board";
 import axios from 'axios'
 import CardList from './components/CardList';
 import NewCardForm from './components/NewCardForm';
@@ -80,7 +79,7 @@ function App() {
   const [selectedBoardId, setSelectedBoardId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showNewBoardForm, setShowNewBoardForm] = useState(false);
+  const [showNewBoardForm, setShowNewBoardForm] = useState(true);
 
   //Board functions
   const getAllBoards = () => {
@@ -163,33 +162,35 @@ function App() {
   return (
     <div className="App">
       <h1>Welcome to the Inspiration Board</h1>
-      <button onClick={() => setShowNewBoardForm(!showNewBoardForm)}>
+      <button className="hide" onClick={() => setShowNewBoardForm(!showNewBoardForm)}>
         {showNewBoardForm ? "Hide New Board Form" : "Show New Board Form"}
       </button>
-      {showNewBoardForm && <NewBoardForm addBoard={addBoard} />}
-      <div>
-        <h2>Boards</h2>
-        <ul>
-          {boards.map((board) => (
-            <li key={board.id} onClick={() => handleBoardClick(board.id)}>
-              {board.title} - {board.owner}
-            </li>
-          ))}
-        </ul>
+      <div className="top-section">
+        {showNewBoardForm && <NewBoardForm addBoard={addBoard} setShowNewForm={setShowNewBoardForm} showNewForm={showNewBoardForm}/>}
+        <div className="board-list">
+          <h2>Boards</h2>
+          <ul>
+            {boards.map((board) => (
+              <li className="board-names" key={board.id} onClick={() => handleBoardClick(board.id)}>
+                {board.title} - {board.owner}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-      {selectedBoard ? (
-        <Board board={selectedBoard} />
-      ) : (
-        <p>No board selected.</p>
+      {selectedBoard && (
+        <div>
+      <h2 className="title">{selectedBoard.title}</h2>
+        <div className="bottom-section">
+          <CardList
+            cards={cardData}
+            onDelete={handleDeleteCard}
+            onLike={handleLike}
+          />
+          <NewCardForm onCardSubmit={handleCardSubmit} />
+        </div>
+        </div>
       )}
-      <div>
-        <NewCardForm onCardSubmit={handleCardSubmit} />
-        <CardList
-          cards={cardData}
-          onDelete={handleDeleteCard}
-          onLike={handleLike}
-        />
-      </div>
     </div>
   );
 }

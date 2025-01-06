@@ -1,11 +1,21 @@
+.form-container {
+    min-width: 20%;
+    max-width: 50%;
+    /* margin-right: 2em; */
+    color: white;
+    background-color: #1B2F33;
+}
+
 .new-card-form {
-    margin-top: 10px;
+    min-width: 250px;
+    padding: 10px;
+    margin: 20px 0;
 }
 
 .new-card-form input {
-    width: 100%;
     margin: 5px 0;
     padding: 5px;
+    width: 90%;
 }
 
 .new-card-form button {
@@ -17,4 +27,9 @@
 
 .new-card-form button:hover {
     background-color: #ffa500;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
 }

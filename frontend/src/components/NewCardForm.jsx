@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import "./NewCardForm.css";
 
 const NewCardForm = ({ onCardSubmit }) => {
     const kDefaultFormState = {
@@ -35,19 +36,22 @@ const NewCardForm = ({ onCardSubmit }) => {
   };
 
   return (
-    <form className="new-card-form" onSubmit={handleSubmit}>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <label htmlFor="Message"> Message </label>
-      <input
-        type="text"
-        id="card"
-        name="message"
-        value={formData.message}
-        onChange={handleChange}
-        placeholder="Add a new message"
-      />
-      <button type="submit">Submit</button>
-    </form>
+    <div className="form-container">
+      <form className="new-card-form" onSubmit={handleSubmit}>
+        <h2>Add Card</h2>
+        <label htmlFor="Message"> Message: </label>
+        <input
+          type="text"
+          id="card"
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          placeholder="Type your message here..."
+        />
+        {error && <p className="error-message">{error}</p>}
+        <button type="submit">Submit</button>
+      </form>
+    </div>
   );
 };
 
