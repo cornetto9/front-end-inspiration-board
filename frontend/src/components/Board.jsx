@@ -4,25 +4,25 @@ import NewCardForm from "./NewCardForm";
 import PropTypes from "prop-types";
 
 const Board = ({ board }) => {
-  const [cards, setCards] = useState(board.cards);
+  // const [cards, setCards] = useState(board.cards);
   const [sortType, setSortType] = useState("alphabetical");
 
-  const addCard = (newCard) => {
-    setCards([...cards, { ...newCard, id: cards.length + 1 }]);
-  };
+  // const addCard = (newCard) => {
+  //   setCards([...cards, { ...newCard, id: cards.length + 1 }]);
+  // };
 
-  const deleteCard = (cardId) => {
-    setCards(cards.filter((card) => card.id !== cardId));
-  };
+  // const deleteCard = (cardId) => {
+  //   setCards(cards.filter((card) => card.id !== cardId));
+  // };
 
-  const sortedCards = [...cards].sort((a, b) => {
-    if (sortType === "alphabetical") {
-      return a.text.localeCompare(b.text);
-    } else if (sortType === "likes") {
-      return b.likes - a.likes;
-    }
-    return 0;
-  });
+  // const sortedCards = [...cards].sort((a, b) => {
+  //   if (sortType === "alphabetical") {
+  //     return a.text.localeCompare(b.text);
+  //   } else if (sortType === "likes") {
+  //     return b.likes - a.likes;
+  //   }
+  //   return 0;
+  // });
 
   return (
     <div className="board">
@@ -35,8 +35,8 @@ const Board = ({ board }) => {
           Sort by number of +1s
         </button>
       </div>
-      <CardList cards={cards} onDelete={deleteCard} />
-      <NewCardForm addCard={addCard} />
+      {/* <CardList cards={cards} onDelete={deleteCard} /> */}
+      {/* <NewCardForm addCard={addCard} /> */}
     </div>
   );
 };

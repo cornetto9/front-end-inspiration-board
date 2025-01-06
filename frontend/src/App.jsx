@@ -3,6 +3,8 @@ import './App.css'
 import NewBoardForm from "./components/NewBoardForm";
 import Board from "./components/Board";
 import axios from 'axios'
+import { Card } from '@material-ui/core';
+import CardList from './components/CardList';
 
 const getAllBoardsApi = () => {
   return axios
@@ -80,7 +82,7 @@ function App() {
       console.log('cardList',cards)
     })
     .catch((error) => {
-      console.log(error);
+      console.log("getCardList", error);
     }); 
   }; 
     
@@ -149,8 +151,13 @@ function App() {
       ) : (
         <p>No board selected.</p>
       )}
+      <div>
+        {/* <h2>Card List {selectedBoard.title}</h2> */}
+        <CardList cards={cardData} />
+      </div>
     </div>
   );
+
 }
 
   // const handleDeleteCard = (id) => {
@@ -172,79 +179,5 @@ function App() {
 //     </>
 //   );
 // }
-
-const testBoards = {
-  board: [
-    {
-      board_id: 1,
-      cards: [],
-      owner: "Me",
-      title: "My First Board",
-    },
-    {
-      board_id: 2,
-      cards: [
-        {
-          board_id: 2,
-          card_id: 1,
-          likes_count: 5,
-          message: "Never give up!",
-        },
-        {
-          board_id: 2,
-          card_id: 2,
-          likes_count: 10,
-          message: "You are capable of amazing things",
-        },
-      ],
-      owner: "Ada Lovelace",
-      title: "Motivation Quotes",
-    },
-    {
-      board_id: 3,
-      cards: [
-        {
-          board_id: 3,
-          card_id: 3,
-          likes_count: 3,
-          message: "I am becoming a better programmer every day",
-        },
-        {
-          board_id: 3,
-          card_id: 6,
-          likes_count: 8,
-          message: "Start small, think big",
-        },
-      ],
-      owner: "Grace Hopper",
-      title: "Daily Affirmations",
-    },
-    {
-      board_id: 4,
-      cards: [
-        {
-          board_id: 4,
-          card_id: 4,
-          likes_count: 7,
-          message: "Debug with patience",
-        },
-        {
-          board_id: 4,
-          card_id: 5,
-          likes_count: 15,
-          message: "Remember to take breaks",
-        },
-      ],
-      owner: "Katherine Johnson",
-      title: "Coding Tips",
-    },
-    {
-      board_id: 5,
-      cards: [],
-      owner: "Sonic",
-      title: "Tests always work!",
-    },
-  ],
-};
 
 export default App;
