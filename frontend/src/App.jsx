@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import NewBoardForm from "./components/NewBoardForm";
+import Board from "./components/Board";
 import axios from 'axios'
 import CardList from './components/CardList';
 import NewCardForm from './components/NewCardForm';
@@ -115,7 +116,7 @@ function App() {
   };
 
   //sets card list by board id
-  const handleBoardClick = (id) => {
+  const handleClickBoard = (id) => {
     setSelectedBoardId(id);
     getCardList(id);
   };  
@@ -152,7 +153,7 @@ function App() {
       setCardData((prevCardData) =>
         prevCardData.map((card) =>
           card.id === id
-            ? { ...card, likesCount: card.likesCount + 1 } // Increment the likes count locally
+            ? { ...card, likesCount: card.likesCount + 1 } 
             : card
         )
       );
@@ -162,33 +163,35 @@ function App() {
   return (
     <div className="App">
       <h1>Welcome to the Inspiration Board</h1>
-      <button className="hide" onClick={() => setShowNewBoardForm(!showNewBoardForm)}>
+      {/* <button className="hide" onClick={() => setShowNewBoardForm(!showNewBoardForm)}>
         {showNewBoardForm ? "Hide New Board Form" : "Show New Board Form"}
-      </button>
+      </button> */}
       <div className="top-section">
-        {showNewBoardForm && <NewBoardForm addBoard={addBoard} setShowNewForm={setShowNewBoardForm} showNewForm={showNewBoardForm}/>}
-        <div className="board-list">
-          <h2>Boards</h2>
-          <ul>
-            {boards.map((board) => (
-              <li className="board-names" key={board.id} onClick={() => handleBoardClick(board.id)}>
-                {board.title} - {board.owner}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {showNewBoardForm && (
+          <NewBoardForm
+            addBoard={addBoard}
+            setShowNewForm={setShowNewBoardForm}
+            showNewForm={showNewBoardForm}
+          />
+        )}
+        <Board
+          boards={boards}
+          handleClick={handleClickBoard}
+          setShowNewForm={setShowNewBoardForm}
+          showNewForm={showNewBoardForm}
+        />
       </div>
       {selectedBoard && (
         <div>
-      <h2 className="title">{selectedBoard.title}</h2>
-        <div className="bottom-section">
-          <CardList
-            cards={cardData}
-            onDelete={handleDeleteCard}
-            onLike={handleLike}
-          />
-          <NewCardForm onCardSubmit={handleCardSubmit} />
-        </div>
+          <h2 className="title">{selectedBoard.title}</h2>
+          <div className="bottom-section">
+            <CardList
+              cards={cardData}
+              onDelete={handleDeleteCard}
+              onLike={handleLike}
+            />
+            <NewCardForm onCardSubmit={handleCardSubmit} />
+          </div>
         </div>
       )}
     </div>

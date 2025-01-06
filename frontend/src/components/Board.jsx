@@ -1,49 +1,41 @@
-import { useState } from "react";
-// import CardList from "./CardList";
-// import NewCardForm from "./NewCardForm";
 import PropTypes from "prop-types";
 import "./Board.css";
 
-const Board = ({ board }) => {
-  // const [cards, setCards] = useState(board.cards);
-  const [sortType, setSortType] = useState("alphabetical");
-
-  // const addCard = (newCard) => {
-  //   setCards([...cards, { ...newCard, id: cards.length + 1 }]);
-  // };
-
-  // const deleteCard = (cardId) => {
-  //   setCards(cards.filter((card) => card.id !== cardId));
-  // };
-
-  // const sortedCards = [...cards].sort((a, b) => {
-  //   if (sortType === "alphabetical") {
-  //     return a.text.localeCompare(b.text);
-  //   } else if (sortType === "likes") {
-  //     return b.likes - a.likes;
-  //   }
-  //   return 0;
-  // });
+const Board = ({ boards, handleClick, setShowNewForm, showNewForm}) => {
 
   return (
     <div>
-      {/* <h2 className="board-title">{board.title}</h2>
-      <div>
-        <button onClick={() => setSortType("alphabetical")}>
-          Sort alphabetically
-        </button>
-        <button onClick={() => setSortType("likes")}>
-          Sort by number of +1s
+      <div className="title-button-container">
+        <h2 className="board-title">Boards</h2>
+        <button
+          className="button-show-hide"
+          onClick={() => setShowNewForm(!showNewForm)}
+        >
+          {showNewForm ? "Click To Hide Board Form" : "Click To Show Board Form"}
         </button>
       </div>
-      <CardList cards={cards} onDelete={deleteCard} />
-      <NewCardForm addCard={addCard} /> */}
+      <div className="board-list-container2">
+        {/* <ul> */}
+        {boards.map((board) => (
+          <p
+            className="board-names"
+            key={board.id}
+            onClick={() => handleClick(board.id)}
+          >
+            {board.title} - {board.owner}
+          </p>
+        ))}
+        {/* </ul> */}
+      </div>
     </div>
   );
 };
 
 Board.propTypes = {
-  board: PropTypes.object.isRequired,
+  boards: PropTypes.array.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  setShowNewForm: PropTypes.func.isRequired,
+  showNewForm: PropTypes.bool.isRequired,
 };
 
 export default Board;
