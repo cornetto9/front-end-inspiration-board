@@ -8,11 +8,28 @@ import NewCardForm from './components/NewCardForm';
 
 const kbaseURL = "http://localhost:5000";
 
+const convertCardFromApi = (card) => {
+  return {
+    id: card.card_id,
+    message: card.message,
+    likesCount: card.likes_count,
+  };
+};
+
+const convertBoardFromApi = (board) => {
+  return {
+    id: board.board_id,
+    title: board.title,
+    owner: board.owner,
+    cards: board.cards ? board.cards.map(convertCardFromApi) : [],
+  };
+};
+
+// Gets the list of boards
 const getAllBoardsApi = () => {
   return axios
     .get(`${kbaseURL}/boards`)
     .then((response) => {
-      // console.log("API Response:", response.data.board);
       const apiBoards = response.data.board;
       const newBoards = apiBoards.map(convertBoardFromApi);
       return newBoards;
@@ -22,28 +39,11 @@ const getAllBoardsApi = () => {
     });
 };
 
-const convertCardFromApi = (card) => {
-  return {
-    id: card.card_id,
-    message: card.message,
-    likesCount: card.likes_count,
-  };
-}
-
-const convertBoardFromApi = (board) => {
-  return {
-    id: board.board_id,
-    title: board.title,
-    owner: board.owner,
-    cards: board.cards ? board.cards.map(convertCardFromApi) : [],
-  };
-}
-
+// Gets the list of cards for a board
 const getCardListApi = (id) => {
   return axios
     .get(`${kbaseURL}/boards/${id}/cards`)
     .then((response) => {
-      // return response.data.cards;
       const apiCards = response.data.cards;
       const newCards = apiCards.map(convertCardFromApi);
       return newCards;
@@ -52,6 +52,26 @@ const getCardListApi = (id) => {
       console.log(error);
     });
 }
+
+// Deletes a card from the board
+const deleteCardApi = (id) => {
+  return axios.delete(`http://127.0.0.1:5000/cards/${id}`)
+    .catch((error) => {
+      console.log(error);
+  });
+};
+
+// Increments the likes count for a card
+const incrementLikesApi = (id) => {
+  return axios
+    .patch(`${kbaseURL}/cards/${id}/like`) 
+    .then(() => {
+      console.log("Like incremented successfully for card:", id);
+    })
+    .catch((error) => {
+      console.error("Error incrementing likes:", error);
+    });
+};
 
 //APP COMPONENT
 function App() {
@@ -62,10 +82,10 @@ function App() {
   const [error, setError] = useState(null);
   const [showNewBoardForm, setShowNewBoardForm] = useState(false);
 
+  //Board functions
   const getAllBoards = () => {
     getAllBoardsApi().then((boards) => {
       setBoards(boards);
-      console.log(boards);
     });
   };
   useEffect(() => {
@@ -73,11 +93,22 @@ function App() {
     setLoading(false);
   }, []);
 
+  const addBoard = (newBoard) => {
+    setBoards([...boards, { ...newBoard, id: boards.length + 1, cards: [] }]);
+  };
+
+  const selectedBoard = boards.find((board) => board.id === selectedBoardId);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  //card functions
+
+  //gets card list by board id
   const getCardList = (id) => {
     getCardListApi(id)
       .then((cards) => {
         setCardData(cards);
-        console.log("cardList", cards);
       })
       .catch((error) => {
         console.log("getCardList", error);
@@ -88,14 +119,10 @@ function App() {
   const handleBoardClick = (id) => {
     setSelectedBoardId(id);
     getCardList(id);
-  };
+  };  
 
-  const addBoard = (newBoard) => {
-    setBoards([...boards, { ...newBoard, id: boards.length + 1, cards: [] }]);
-  };
-
+  //adds card to board
   const handleCardSubmit = (data) => {
-    console.log(selectedBoardId);
     axios
       .post(`${kbaseURL}/boards/${selectedBoardId}/cards`, data)
       .then((response) => {
@@ -109,14 +136,7 @@ function App() {
       });
   };
 
-  const deleteCardApi = (id) => {
-    return axios
-      .delete(`http://127.0.0.1:5000/cards/${id}`)
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
+  //deletes card from board
   const handleDeleteCard = (id) => {
     deleteCardApi(id).then(() => {
       setCardData((cardData) =>
@@ -127,10 +147,18 @@ function App() {
     });
   };
 
-  const selectedBoard = boards.find((board) => board.id === selectedBoardId);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  //increments likes on card
+  const handleLike = (id) => {
+    incrementLikesApi(id).then(() => {
+      setCardData((prevCardData) =>
+        prevCardData.map((card) =>
+          card.id === id
+            ? { ...card, likesCount: card.likesCount + 1 } // Increment the likes count locally
+            : card
+        )
+      );
+    });
+  };
 
   return (
     <div className="App">
@@ -155,13 +183,17 @@ function App() {
         <p>No board selected.</p>
       )}
       <div>
-        {/* <h2>Card List {selectedBoard.title}</h2> */}
         <NewCardForm onCardSubmit={handleCardSubmit} />
-        <CardList cards={cardData} onDelete={handleDeleteCard}/>
+        <CardList
+          cards={cardData}
+          onDelete={handleDeleteCard}
+          onLike={handleLike}
+        />
       </div>
     </div>
   );
 }
+
 
 
 export default App;

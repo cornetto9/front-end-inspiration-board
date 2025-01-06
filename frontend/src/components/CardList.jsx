@@ -2,17 +2,18 @@ import Card from "./Card";
 import PropTypes from "prop-types";
 import "./Card.css";
 
-const CardList = ({cards, onDelete}) => {
+const CardList = ({cards, onDelete, onLike}) => {
   const getCardList = (cards) => {
     return cards.map((card) => (
         <Card 
         key={card.id} 
         card={card} 
-        onDelete={onDelete} 
+        onDelete={onDelete}
+        onLike={onLike}
         />
       ));
   };
-  // console.log(cards, cards.length);
+
   return (
     <div className="create-card-section">
       {getCardList(cards)}
@@ -23,6 +24,7 @@ const CardList = ({cards, onDelete}) => {
 CardList.propTypes = {
   cards: PropTypes.array.isRequired,
   onDelete: PropTypes.func.isRequired,
+  onLike: PropTypes.func.isRequired,
 };
 
 

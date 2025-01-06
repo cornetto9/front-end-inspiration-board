@@ -1,6 +1,6 @@
 import { useState } from "react";
-import CardList from "./CardList";
-import NewCardForm from "./NewCardForm";
+// import CardList from "./CardList";
+// import NewCardForm from "./NewCardForm";
 import PropTypes from "prop-types";
 
 const Board = ({ board }) => {
