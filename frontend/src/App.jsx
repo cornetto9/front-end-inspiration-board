@@ -128,10 +128,11 @@ function App() {
   };
 
   const handleCardSubmit = (data) => {
+    console.log(selectedBoardId);
     axios
       .post(`${kbaseURL}/boards/${selectedBoardId}/cards`, data)
       .then((response) => {
-        setCardData((prevCardData) => [convertCardFromApi(response.data), ...prevCardData]);
+        setCardData((prevCardData) => [convertCardFromApi(response.data.card), ...prevCardData]);
       })
       .catch((error) => {
         console.log(error);
