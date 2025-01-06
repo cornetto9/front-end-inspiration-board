@@ -19,7 +19,7 @@ const NewBoardForm = ({ addBoard }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="new-board-form" onSubmit={handleSubmit}>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <div>
         <label htmlFor="title">Title:</label>

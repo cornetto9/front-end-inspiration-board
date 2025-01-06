@@ -2,25 +2,22 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import "./Card.css";
 
-const Card = ({ id, onDelete }) => {
+const Card = ({ card, onDelete }) => {
   const [likes, setLikes] = useState(0);
 
   // need to add Id
   const onClickDelete = () => {
-    onDelete(id);
+    onDelete(card.id);
   };
 
   return (
     <div className="card">
       <div className="card-content">
-        {/* <p>{message}</p> */}
-        <p>Test message</p>
+        <p>{card.message}</p>
       </div>
       <div className="card-controls">
-        <span>10 💕</span>
-        {/* <span>{likesCount} 💕</span> */}
-        {/* <button onClick={onLike}>+1</button> */}
-        <button>+1</button>
+        <span>{card.likesCount} 💕</span>
+        <button onClick={() => setLikes(likes + 1)}>+1</button>
         <button onClick={onClickDelete}>Delete</button>
       </div>
     </div>
@@ -31,8 +28,6 @@ export default Card;
 
 
 Card.propTypes = {
-  id: PropTypes.number.isRequired,
-  message: PropTypes.string.isRequired,
-  likesCount: PropTypes.number.isRequired,
+  card: PropTypes.object.isRequired,
   onDelete: PropTypes.func.isRequired,
 };

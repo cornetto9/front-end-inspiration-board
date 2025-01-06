@@ -12,7 +12,7 @@ const CardList = ({cards, onDelete}) => {
         />
       ));
   };
-  console.log(cards, cards.length);
+  // console.log(cards, cards.length);
   return (
     <div className="create-card-section">
       {getCardList(cards)}

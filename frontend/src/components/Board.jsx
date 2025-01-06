@@ -25,8 +25,8 @@ const Board = ({ board }) => {
   });
 
   return (
-    <div>
-      <h2>{board.title}</h2>
+    <div className="board">
+      <h2 className="board-title">{board.title}</h2>
       <div>
         <button onClick={() => setSortType("alphabetical")}>
           Sort alphabetically

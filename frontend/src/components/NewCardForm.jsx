@@ -21,7 +21,7 @@ const NewCardForm = ({ addCard }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="new-card-form" onSubmit={handleSubmit}>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <input
         type="text"
