@@ -6,7 +6,7 @@ import axios from 'axios'
 import CardList from './components/CardList';
 import NewCardForm from './components/NewCardForm';
 
-const kbaseURL = "http://127.0.0.1:5000";
+const kbaseURL = "https://back-end-inspiration-board-dream-girls.onrender.com";
 
 const convertCardFromApi = (card) => {
   return {
@@ -67,7 +67,7 @@ const getCardListApi = (id) => {
 
 // Deletes a card from the board
 const deleteCardApi = (id) => {
-  return axios.delete(`http://127.0.0.1:5000/cards/${id}`)
+  return axios.delete(`https://back-end-inspiration-board-dream-girls.onrender.com/cards/${id}`)
     .catch((error) => {
       console.log(error);
   });
