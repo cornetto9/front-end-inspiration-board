@@ -13,6 +13,8 @@ const NewBoardForm = ({ addBoard, setShowNewForm, showNewForm }) => {
       setError("Both title and owner are required.");
       return;
     }
+
+    console.log("Adding board:", { title, owner }); // Debugging
     addBoard({ title, owner });
     setTitle("");
     setOwner("");
@@ -41,7 +43,7 @@ const NewBoardForm = ({ addBoard, setShowNewForm, showNewForm }) => {
         />
       </div>
       <button type="submit">Add Board</button>
-      <button onClick={() => setShowNewForm(!showNewForm)}>
+      <button type="button" onClick={() => setShowNewForm(!showNewForm)}>
         Hide Board
       </button>
     </form>
