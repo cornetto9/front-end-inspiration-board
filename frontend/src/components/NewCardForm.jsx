@@ -39,10 +39,10 @@ const NewCardForm = ({ onCardSubmit }) => {
     <div className="form-container">
       <form className="new-card-form" onSubmit={handleSubmit}>
         <h2>Add Card</h2>
-        <label htmlFor="Message"> Message: </label>
+        <label htmlFor="message"> Message: </label>
         <input
           type="text"
-          id="card"
+          id="message"
           name="message"
           value={formData.message}
           onChange={handleChange}

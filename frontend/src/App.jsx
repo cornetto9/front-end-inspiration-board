@@ -136,7 +136,7 @@ function App() {
       });
   };
 
-  //deletes card from board
+  //deletes card from board frontend and backend
   const handleDeleteCard = (id) => {
     deleteCardApi(id).then(() => {
       setCardData((cardData) =>
@@ -147,7 +147,7 @@ function App() {
     });
   };
 
-  //increments likes on card
+  //increments likes on card frontend
   const handleLike = (id) => {
     incrementLikesApi(id).then(() => {
       setCardData((prevCardData) =>
