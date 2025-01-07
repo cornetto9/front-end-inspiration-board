@@ -14,7 +14,6 @@ const NewBoardForm = ({ addBoard, setShowNewForm, showNewForm }) => {
       return;
     }
 
-    console.log("Adding board:", { title, owner }); // Debugging
     addBoard({ title, owner });
     setTitle("");
     setOwner("");
