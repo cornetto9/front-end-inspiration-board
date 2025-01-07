@@ -36,9 +36,21 @@ const getAllBoardsApi = () => {
     })
     .catch((error) => {
       console.log("error", error);
+      return [];
     });
 };
 
+// add new board 
+const addBoardApi = (data) => {
+  return axios
+    .post(`${kbaseURL}/boards`, data)
+    .then((response) => {
+      return convertBoardFromApi(response.data.board);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
 // Gets the list of cards for a board
 const getCardListApi = (id) => {
   return axios
@@ -74,8 +86,8 @@ const incrementLikesApi = (id) => {
 };
 
 //APP COMPONENT
-function App() {
-  const [boards, setBoards] = useState([]);
+function App({ initialBoards = [] }) {
+  const [boards, setBoards] = useState([initialBoards]);
   const [cardData, setCardData] = useState([]);
   const [selectedBoardId, setSelectedBoardId] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -86,21 +98,36 @@ function App() {
   const getAllBoards = () => {
     getAllBoardsApi().then((boards) => {
       setBoards(boards);
+      setLoading(false);
+    })
+    .catch((error) => {
+      setError(error);
+      setLoading(false);
     });
   };
   useEffect(() => {
-    getAllBoards();
-    setLoading(false);
-  }, []);
+    if (initialBoards.length === 0) {
+      getAllBoards();
+    } else {
+      setLoading(false);
+    }
+  }, [initialBoards]);
+
 
   const addBoard = (newBoard) => {
-    setBoards([...boards, { ...newBoard, id: boards.length + 1, cards: [] }]);
+    addBoardApi(newBoard)
+      .then((board) => {
+        setBoards((prevBoards) => [...prevBoards, board]);
+      })
+      .catch((error) => {
+        console.log("addBoard", error);
+      });
   };
 
   const selectedBoard = boards.find((board) => board.id === selectedBoardId);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error: {error}</p>;
 
   //card functions
 
@@ -159,6 +186,14 @@ function App() {
       );
     });
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className="App">
