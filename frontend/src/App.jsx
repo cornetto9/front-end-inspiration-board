@@ -68,9 +68,8 @@ const getCardListApi = (id) => {
 
 // Deletes a card from the board
 const deleteCardApi = (id) => {
-  return axios.delete(`https://back-end-inspiration-board-dream-girls.onrender.com/cards/${id}`)
-    .catch((error) => {
-      console.log(error);
+  return axios.delete(`${kbaseURL}/${id}`).catch((error) => {
+    console.log(error);
   });
 };
 
@@ -78,9 +77,6 @@ const deleteCardApi = (id) => {
 const incrementLikesApi = (id) => {
   return axios
     .patch(`${kbaseURL}/cards/${id}/like`) 
-    .then(() => {
-      console.log("Like incremented successfully for card:", id);
-    })
     .catch((error) => {
       console.error("Error incrementing likes:", error);
     });
