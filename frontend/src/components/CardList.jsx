@@ -26,11 +26,14 @@ const CardList = ({ cards, onDelete, onLike }) => {
   return (
     <div className="cardList-container">
       <div className="sort-controls">
+      <label>
+        Filter: {" "}
         <select value={sortOption} onChange={handleSortChange}>
           <option value="highest">Most Likes</option>
           <option value="lowest">Least Likes</option>
-          <option value="none">Original Order</option>
+          <option value="none">None</option>
         </select>
+      </label>
       </div>
       <div className="card-container">
         {getSortedCards(cards).map((card) => (
