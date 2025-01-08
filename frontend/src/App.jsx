@@ -5,6 +5,7 @@ import Board from "./components/Board";
 import axios from 'axios'
 import CardList from './components/CardList';
 import NewCardForm from './components/NewCardForm';
+import PropTypes from "prop-types";
 
 const kbaseURL = "https://back-end-inspiration-board-dream-girls.onrender.com";
 
@@ -126,9 +127,6 @@ function App({ initialBoards = [] }) {
 
   const selectedBoard = boards.find((board) => board.id === selectedBoardId);
 
-  // if (loading) return <p>Loading...</p>;
-  // if (error) return <p>Error: {error}</p>;
-
   //card functions
 
   //gets card list by board id
@@ -198,9 +196,6 @@ function App({ initialBoards = [] }) {
   return (
     <div className="App">
       <h1>Welcome to the Inspiration Board</h1>
-      {/* <button className="hide" onClick={() => setShowNewBoardForm(!showNewBoardForm)}>
-        {showNewBoardForm ? "Hide New Board Form" : "Show New Board Form"}
-      </button> */}
       <div className="top-section">
         {showNewBoardForm && (
           <NewBoardForm
@@ -233,6 +228,8 @@ function App({ initialBoards = [] }) {
   );
 }
 
-
+App.propTypes = {
+  initialBoards: PropTypes.array,
+};
 
 export default App;
