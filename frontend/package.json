@@ -16,6 +16,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "axios": "^1.7.9",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
@@ -32,7 +33,7 @@
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.13.0",
     "jsdom": "^25.0.1",
-    "vite": "^6.0.3",
+    "vite": "^6.0.7",
     "vitest": "^2.1.8"
   }
 }
